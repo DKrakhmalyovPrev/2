@@ -27,7 +27,7 @@ class BigInt
 			int j=1;
 			if(s==0)
 				value.push_back(0);
-			while(s>j)
+			while(s>=j)
 			{
 				j*=10;
 			}
@@ -120,15 +120,11 @@ class BigInt
 					os=-1;
 				}
 			}
-			ti[0]=os;
 			BigInt s;
-			if(ti[0]==0)
-				os=1;
-			else
-				os=0;
+			int q=1;
 			if(ti[1]==0)
-				os=2;			
-			for(int i = os; i<=maxs;i++)
+				q=2;			
+			for(int i = q; i<=maxs;i++)
 				s.value.push_back(ti[i]);
 			return(s) ;
 		}
@@ -137,7 +133,7 @@ class BigInt
 		{
 			int maxs=bsl.value.size();
 			int mins=msl.value.size();
-			int os=0; 
+			/*int os=0; 
 			int ti[mins][maxs+1];
 			for(int i=0;i<mins;i++)
 			{
@@ -175,7 +171,28 @@ class BigInt
 			while(ta[i]==0) i++;	
 			for(int j=i; j<mins+maxs; j++)
 				s.value.push_back(ta[j]);
-			return(s);
+			return(s);*/
+			
+			int result[maxs+mins+1];
+			for(int i=0;i<maxs+mins+1;i++)
+				result[i]=0;
+			BigInt jack;
+			for(int i=maxs-1; i>=0; i--)
+			{
+				for(int j=mins-1; j>=0; j--)
+				{
+					result[i+j+1]+=(bsl.value[i]*msl.value[j]);
+					result[i+j]+=(result[i+j+1]/10);
+					result[i+j+1]=result[i+j+1]%10;
+				}
+			}
+			int j=0;
+			while(result[j]==0)
+				j++;
+			for(int i=j;i<=maxs+mins-1;i++)
+				jack.value.push_back(result[i]);
+			
+			return(jack);
 		}
 		
 		const BigInt Div(const BigInt& a,const BigInt& b)
@@ -186,8 +203,8 @@ class BigInt
 			BigInt l(b);
 			while(Cmp(k,l)>=0)
 			{	
-				k.Dif(k,l);
-				s.Sum(s,o);
+				k=k.Dif(k,l);
+				s=k.Sum(s,o);
 			}
 			return(s);
 		}
@@ -215,12 +232,10 @@ class BigInt
 istream& operator>>(istream& is,BigInt& s)
 {
 	char c;
-	int i=0;
-	is>>c;
+	c=getchar();
 	while((c<='9')&&(c>='0'))
 	{
 		s.value.push_back(c-'0');
-		i++;
 		c=getchar();
 	}		
 	return(is);
@@ -259,27 +274,28 @@ BigInt operator/(BigInt& bsl,BigInt& msl)
 }
 
 BigInt operator%(BigInt& bsl,BigInt& msl)
-{
-	if(bsl.size()>msl.size())
-		return(bsl.Mod(bsl,msl));		
-	else	
-		return(msl.Mod(msl,bsl));
+{	
+	return(bsl.Mod(bsl,msl));		
 }
 
 const int Cmp(const BigInt& a, const BigInt& b)
 {
 	int i=0;
-	while((a.value[i]==b.value[i]) && (i<a.value.size()-1) && (i<b.value.size()-1)) i++;
+	if(a.value.size()>b.value.size()) return(1);
+	else if (a.value.size()<b.value.size()) return(-1); 
+	else
+	{
+	while((a.value[i]==b.value[i]) && (i<a.value.size()) && (i<b.value.size())) i++;
 	if(a.value[i]>b.value[i]) return(1);
-	if(a.value[i]<b.value[i]) return(-1);
-	if((a.value[i]==b.value[i]) && (a.value.size()>b.value.size())) return(1);
-	if((a.value[i]==b.value[i]) && (a.value.size()<b.value.size())) return(-1);		
+	if(a.value[i]<b.value[i]) return(-1);		
 	if((a.value[i]==b.value[i]) && (a.value.size()==b.value.size())) return(0);
+	}
 }
 int main()
 {
-	BigInt s,q(235);
-	cin>>s;
-	(s%q).PrintInt();
+	BigInt s(12),q(5);
+	//cin>>s;
+	//cin>>q;
+	s.PrintInt();
 	return(0);
 }	
