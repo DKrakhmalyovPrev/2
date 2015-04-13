@@ -293,9 +293,6 @@ const int Cmp(const BigInt& a, const BigInt& b)
 }
 int main()
 {
-	BigInt s(12),q(5);
-	//cin>>s;
-	//cin>>q;
-	s.PrintInt();
+
 	return(0);
 }	
