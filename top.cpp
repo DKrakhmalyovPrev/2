@@ -1,15 +1,9 @@
 #include <iostream>
-
 #include <stdlib.h>
-
 #include <string.h>
-
 #include <stdio.h>
-
 #include <vector>
-
 #include <map>
-
 using namespace std;
 
 template <typename T>
