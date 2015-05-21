@@ -12,6 +12,13 @@
 
 using namespace std;
 
+template <typename T>
+bool Cmp(const T a, const T b)
+{
+    return a < b ? 1 : 0;
+};
+
+
 template<typename key, typename value>
 
 class TopResult
@@ -52,7 +59,7 @@ class TopResult
 					}
 				}
 	
-				if(minv<h)
+				if(Cmp(minv,h))
 				{
 					Top.erase(mink); 
 					Top[q]=h;
@@ -70,6 +77,7 @@ class TopResult
 };
 
 
+
 int main()
 {
 		
@@ -85,4 +93,5 @@ int main()
 	mytop.PrintMap();
 	return(0);
 }
+
 // g++ top.cpp -std=c++11 -o top
