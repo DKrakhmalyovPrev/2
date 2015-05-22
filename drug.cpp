@@ -1,41 +1,19 @@
 #include <iostream>
-
 #include <stdlib.h>
-
 #include <string.h>
-
 #include <stdio.h>
-
 #include <vector>
-
 using namespace std;
-void GetVector(vector<char>& a)
-{
-	char c;
-			
-	c=getchar();
-	while(c!='\n')
-	{
-	a.push_back(c);
-	c=getchar();
-	}
-}
 
-const void PrintVector(vector<char>& a)
-{
-	for(int i=0; i<a.size(); i++)
-		cout<<a[i];
-	cout<<"\n";
-}
 
 class Drug
 {
 	private:
-		vector<char> name;
-		vector<char> maker;
-		vector<char> sub;
+		string name;
+		string maker;
+		string sub;
 		double dose;
-		vector<char> form;
+		string form;
 		double price;
 	public:
 		
@@ -56,21 +34,15 @@ class Drug
 		
 		void ScanDrug()
 		{
-			GetVector(name);
-			GetVector(maker);
-			GetVector(sub);
-			GetVector(form);
-			cin>>dose;
+			cin>>name>>maker>>sub>>dose>>form>>price;
+			//scanf("%s %s %s %lf %s", name, maker, sub, &dose, form);
 			price=0;
 		}
 
 		const void PrintDrug()
 		{
-			PrintVector(name);
-			PrintVector(maker);
-			PrintVector(sub);
-			PrintVector(form);
-			cout<<dose;
+			cout<<name<<' '<<maker<<' '<<sub<<' '<<dose<<' '<<form<<' '<<price<<'\n';
+			//printf("%s %s %s %lf %s", name, maker, sub, dose, form);
 		}
 		
 		void AddPrice(double a)
@@ -83,8 +55,6 @@ class Drug
 			return(price);
 		}
 		
-		friend const void PrintVector(vector<char>&);
-		friend void GetVector(vector<char>&);
 		friend class DrugStore;
 };
 
@@ -128,10 +98,7 @@ class DrugStore
 			DrugStore q;
 			for(int i=0; i<store.size(); i++)
 			{
-				int k=0;
-				while( (a[k]==store[i].name[k]) && (k<strlen(a)) && (k<store[i].name.size()) )
-					k++;
-				if( (k==strlen(a)-1) && (k==store[i].name.size()-1) )
+				if(a == store[i].name)
 					q.store.push_back(store[i]);
 			}
 			return(q);
@@ -141,11 +108,9 @@ class DrugStore
 		{
 			for(int i=0; i<store.size(); i++)
 			{
-				int k=0;
-				while( (a[k]==store[i].name[k]) && (k<strlen(a)) && (k<store[i].name.size()) )
-					k++;
-				if( (k==strlen(a)-1) && (k==store[i].name.size()-1) )
-					return(store[k].price);
+				if(a == store[i].name)
+					return(store[i].price);
+				
 			}	
 			return(0);
 		}
@@ -155,10 +120,7 @@ class DrugStore
 			DrugStore q;
 			for(int i=0; i<store.size(); i++)
 			{
-				int k=0;
-				while( (a[k]==store[i].maker[k]) && (k<strlen(a)) && (k<store[i].maker.size()) )
-					k++;
-				if( (k==strlen(a)-1) && (k==store[i].maker.size()-1) )
+				if(a == store[i].maker)
 					q.store.push_back(store[i]);
 			}
 			return(q);
@@ -169,10 +131,7 @@ class DrugStore
 			DrugStore q;
 			for(int i=0; i<store.size(); i++)
 			{
-				int k=0;
-				while( (a[k]==store[i].sub[k]) && (k<strlen(a)) && (k<store[i].sub.size()) )
-					k++;
-				if( (k==strlen(a)-1) && (k==store[i].sub.size()-1) )
+				if(a == store[i].sub)
 					q.store.push_back(store[i]);
 			}
 			return(q);
@@ -192,10 +151,7 @@ class DrugStore
 			DrugStore q;
 			for(int i=0; i<store.size(); i++)
 			{
-				int k=0;
-				while( (a[k]==store[i].form[k]) && (k<strlen(a)) && (k<store[i].form.size()) )
-					k++;
-				if( (k==strlen(a)-1) && (k==store[i].form.size()-1) )
+				if(a==store[i].form)
 					q.store.push_back(store[i]);
 			}
 			return(q);
@@ -265,10 +221,28 @@ class DrugStore
 		
 		
 };
+
+bool operator==(const string& a, const string& b)
+{
+	auto ita=a.begin();
+	auto itb=b.begin();
+	bool q=1;
+	while( (ita<a.end()) && (itb<b.end()) )
+	{ 
+		if( (*ita)!=(*itb) )
+			q=0;
+		ita++; itb++;
+	} 	
+	return(q);
+}
 		
 int main()
 {
-	
+	DrugStore a;
+	a.AddDrugNow();
+	a.AddDrugNow();
+	DrugStore b(a.SearchByLetter('a'));
+	a.PrintOrder(b);
 	return(0);
 }
 			
