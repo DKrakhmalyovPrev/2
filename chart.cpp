@@ -7,6 +7,7 @@
 #include <string.h>
 #include <algorithm>
 #include <functional>
+#include <fstream>
 
 using namespace std;
 
@@ -47,7 +48,7 @@ class Chart
 
 		std::sort(top.begin(), top.end(), customLess);
 		vector<int> a;
-		for(int i=0; i<topSize; i++)
+		for(int i=0; (i<topSize) && (i<U_T[username].size()); i++)
 			a.push_back(top[i].first);
 		return(a);					
 	}
@@ -70,32 +71,52 @@ class Chart
 
 };
 
-
+void Run(int i)
+{
+	Chart a;	
+	ifstream input("input.txt");
+	for(int j=0; j<i;j++)
+	{
+		string s;
+		input>>s;
+		if(s=="VOTE")
+		{
+			string s1;
+			int q;
+			input>>s1>>q;
+			a.VoteRecord(s1,q);
+		}
+		if(s=="TOP")
+		{
+			string s1;
+			int q;
+			input>>s1>>q;
+			vector<int> b;
+			b=a.GetTop(s1,q);
+			cout<<"Топ для "<<s1<<":\n";
+			for(int i=0;i<b.size();i++)
+				cout<<b[i]<<" ";
+			cout<<"\n";
+		}
+		if(s=="HISTORY_SIZE")
+		{	
+			string s1;
+			input>>s1;
+			cout<<a.GetHistorySize(s1)<<"\n";
+		}
+		if(s=="DISTINCT")
+		{
+			string s1;
+			input>>s1;
+			cout<<a.GetDistinctTrackSize(s1)<<"\n";
+			
+		}
+	}
+}
+		
 int main()
 {
-	Chart a;
-	a.VoteRecord("vasya", 1);
-	a.VoteRecord("vasya", 1);
-	a.VoteRecord("vasya", 1);
-	a.VoteRecord("vasya", 2);
-	a.VoteRecord("vasya", 2);
-	a.VoteRecord("vasya", 3);
-	a.VoteRecord("vasya", 3);
-	a.VoteRecord("vasya", 3);
-	a.VoteRecord("vasya", 3);
-	a.VoteRecord("vasyan", 228);
-	a.VoteRecord("vasyan", 30);
-	a.VoteRecord("vasyan", 30);
-	a.VoteRecord("vasyan", 30);
-	a.VoteRecord("vasyan", 41);
-	a.VoteRecord("vasyan", 228);
-	a.VoteRecord("vasyan", 41);
-	a.VoteRecord("vasyan", 30);
-	a.VoteRecord("vasyan", 25);
-	vector<int> b;
-	b=a.GetTop("vasyan", 2);
-	for(int i=0;i<b.size();i++)
-		cout<<b[i]<<" ";
-	cout<<a.GetDistinctTrackSize("vasyan");
+	
+	Run(4);
 	return(0);
 }
