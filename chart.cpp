@@ -71,10 +71,12 @@ class Chart
 
 };
 
-void Run(int i)
-{
+void Run()
+{	
+	int i;
 	Chart a;	
 	ifstream input("input.txt");
+	input>>i;
 	for(int j=0; j<i;j++)
 	{
 		string s;
@@ -117,6 +119,6 @@ void Run(int i)
 int main()
 {
 	
-	Run(4);
+	Run();
 	return(0);
 }
