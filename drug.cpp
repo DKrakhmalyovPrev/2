@@ -34,14 +34,14 @@ class Drug
 		
 		void ScanDrug()
 		{
-			cin>>name>>maker>>sub>>dose>>form>>price;
+			cin>>name>>maker>>sub>>dose>>form;
 			//scanf("%s %s %s %lf %s", name, maker, sub, &dose, form);
 			price=0;
 		}
 
 		const void PrintDrug()
 		{
-			cout<<name<<' '<<maker<<' '<<sub<<' '<<dose<<' '<<form<<' '<<price<<'\n';
+			cout<<name<<' '<<maker<<' '<<sub<<' '<<dose<<' '<<form<<'\n';
 			//printf("%s %s %s %lf %s", name, maker, sub, dose, form);
 		}
 		
@@ -84,16 +84,18 @@ class DrugStore
 			store.push_back(a);
 		}
 		
-		DrugStore SearchByLetter(char a)
+		DrugStore SearchBySubName(string a)
 		{
 			DrugStore q;
-			for(int i=0; i< store.size(); i++)
-				if(store[i].name[0]==a)
+			for(int i=0; i<store.size(); i++)
+			{
+				if(store[i].name.find(a)==0)
 					q.store.push_back(store[i]);
+			}
 			return(q);
 		}
-		
-		DrugStore SearchByName(char* a)
+
+		DrugStore SearchByName(string a)
 		{
 			DrugStore q;
 			for(int i=0; i<store.size(); i++)
@@ -115,7 +117,7 @@ class DrugStore
 			return(0);
 		}
 		
-		DrugStore SearchByMaker(char* a)
+		DrugStore SearchByMaker(string a)
 		{
 			DrugStore q;
 			for(int i=0; i<store.size(); i++)
@@ -126,7 +128,7 @@ class DrugStore
 			return(q);
 		}
 		
-		DrugStore SearchBySub(char* a)
+		DrugStore SearchBySub(string a)
 		{
 			DrugStore q;
 			for(int i=0; i<store.size(); i++)
@@ -138,7 +140,7 @@ class DrugStore
 		}
 		
 		
-		DrugStore SearchByMakerNSub(char* a, char* b)
+		DrugStore SearchByMakerNSub(string a, string b)
 		{
 			DrugStore q;
 			q=this->SearchByMaker(a);
@@ -146,7 +148,7 @@ class DrugStore
 			return(q);
 		}
 		
-		DrugStore SearchByForm(char* a)
+		DrugStore SearchByForm(string a)
 		{
 			DrugStore q;
 			for(int i=0; i<store.size(); i++)
@@ -157,7 +159,7 @@ class DrugStore
 			return(q);
 		}
 
-		DrugStore SearchBySubNForm(char* a, char* b)
+		DrugStore SearchBySubNForm(string a, string b)
 		{
 			DrugStore q;
 			DrugStore s;
@@ -183,10 +185,10 @@ class DrugStore
 			return(s);
 		}
 		
-		void PrintOrder(DrugStore& a)
+		void PrintOrder()
 		{
-			for(int i=0; i<a.store.size(); i++)
-				a.store[i].PrintDrug();
+			for(int i=0; i<store.size(); i++)
+				store[i].PrintDrug();
 		}
 
 		//формировать и выводить заказ по названиям действующих веществ, минимизируя его стоимость
@@ -235,14 +237,17 @@ bool operator==(const string& a, const string& b)
 	} 	
 	return(q);
 }
+
+
 		
 int main()
 {
 	DrugStore a;
 	a.AddDrugNow();
 	a.AddDrugNow();
-	DrugStore b(a.SearchByLetter('a'));
-	a.PrintOrder(b);
+	DrugStore b;
+	b=a.SearchByName("ab");
+	b.PrintOrder();
 	return(0);
 }
 			
